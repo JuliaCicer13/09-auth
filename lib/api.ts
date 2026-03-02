@@ -1,7 +1,11 @@
 import axios from "axios";
 import type { Note }from "../types/note";
 
-const BASE_URL = "https://notehub-public.goit.study/api/notes";
+
+const nextServer = axios.create({
+baseURL: "https://notehub-api.goit.study",
+ withCredentials: true,
+})
 
 interface FetchNotesResponse {
     notes: Note[];
@@ -14,21 +18,13 @@ export interface CreateNotePayload {
     tag: string;
 }
 
-const api = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`,
-
-  },
-});
-
 
 export const fetchNotes = async (
   search: string,
   page: number,
   tag?: string,
 ) : Promise<FetchNotesResponse> => {
-  const response = await api.get<FetchNotesResponse>("", {
+  const response = await nextServer.get<FetchNotesResponse>("", {
     params: {
       search,
       page,
@@ -40,16 +36,16 @@ export const fetchNotes = async (
 
 
 export const fetchNoteById = async (id: string): Promise<Note> => {
-  const response = await api.get<Note>(`/${id}`);
+  const response = await nextServer.get<Note>(`/${id}`);
   return response.data;
 };
 
 export const createNote = async (payload: CreateNotePayload): Promise<Note> => {
-  const response = await api.post<Note>("", payload);
+  const response = await nextServer.post<Note>("", payload);
   return response.data;
 };
 
 export const deleteNote = async (noteId: string): Promise<Note> => {
-  const response = await api.delete<Note>(`/${noteId}`);
+  const response = await nextServer.delete<Note>(`/${noteId}`);
   return response.data;
 }
