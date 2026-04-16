@@ -79,5 +79,5 @@ export type LoginRequest = {
 
 export const login = async (data: LoginRequest) => {
    const res = await nextServer.post<User>('/auth/login', data);
-   return res.data;
+   return res;
 };
