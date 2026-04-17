@@ -39,7 +39,7 @@ const SignUp = () => {
       <form action={handleSubmit}>
         <label>
           Username
-          <input type="text" name="userName" required />
+          <input type="text" name="username" required />
         </label>
         <label>
           Email
