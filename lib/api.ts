@@ -53,13 +53,11 @@ export const deleteNote = async (noteId: string): Promise<Note> => {
 export type RegisterRequest = {
   email: string;
   password: string;
-  userName: string;
 };
 
 export type User = {
   id: string;
   email: string;
-  userName?: string;
   photoUrl?: string;
   createdAt: Date;
   updatedAt: Date;
@@ -73,7 +71,6 @@ export const register = async (data: RegisterRequest) => {
 
 
 export type LoginRequest = {
-  username: string;
   email: string;
   password: string;
 };
