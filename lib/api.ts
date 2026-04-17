@@ -73,6 +73,7 @@ export const register = async (data: RegisterRequest) => {
 
 
 export type LoginRequest = {
+  username: string;
   email: string;
   password: string;
 };
