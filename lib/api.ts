@@ -92,3 +92,7 @@ export const getMe = async () => {
   const {data} = await nextServer.get<User>('/auth/me');
   return data;
 }
+
+export const logout = async (): Promise<void> => {
+   await nextServer.post('/auth/logout');
+}

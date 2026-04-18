@@ -1,5 +1,6 @@
 import css from './Header.module.css';
 import Link from 'next/link';
+import AuthNavigation from '../AuthNavigation/AuthNavigation';
 const Header =() => {
 return (
 <header className={css.header}>
@@ -24,6 +25,7 @@ return (
           <li>
             <Link href="/sign-up">Register</Link>
           </li>
+          <AuthNavigation /> 
         </ul>
     </nav>
 </header>
