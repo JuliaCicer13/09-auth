@@ -1,12 +1,12 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Page About",
+    title: "Page Profile",
     description: "There are some infromation about us",
 };
 
-const PageAbout = () => {
+const PageProfile = () => {
   return <div>PageAbout</div>;
 };
 
-export default PageAbout;
+export default PageProfile;
