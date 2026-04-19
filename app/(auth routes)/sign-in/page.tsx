@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { login, LoginRequest } from '@/lib/api';
+import { login , LoginRequest} from '@/lib/api/client.Api';
 import { useAuthStore } from '@/lib/store/authStore';
 import { ApiError } from '@/app/api/api'
 

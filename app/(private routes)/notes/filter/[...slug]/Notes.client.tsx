@@ -1,5 +1,5 @@
 "use client";
-import { fetchNotes } from "@/lib/api";
+import { fetchNotes } from '@/lib/api/client.Api'; 
 import { useState } from 'react'
 import SearchBox from "@/components/SearchBox/SearchBox";
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
