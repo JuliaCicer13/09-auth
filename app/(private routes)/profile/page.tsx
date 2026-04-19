@@ -1,12 +1,24 @@
-import { Metadata } from "next";
+import Link from 'next/link';
+import { getServerMe } from '@/lib/api/serverApi';
 
-export const metadata: Metadata = {
-    title: "Page Profile",
-    description: "There are some infromation about us",
+const Profile = async () => {
+  const user = await getServerMe();
+
+  return (
+    <section>
+      <div>
+        <h1>My Profile</h1>
+        <Link href="/profile/edit">Edit profile</Link>
+      </div>
+      <div>
+        <h2>Name: {user.username}</h2>
+        <h2>Email: {user.email}</h2>
+        <p>
+          Some description: Lorem ipsum dolor sit amet consectetur adipisicing elit...
+        </p>
+      </div>
+    </section>
+  );
 };
 
-const PageProfile = () => {
-  return <div>PageAbout</div>;
-};
-
-export default PageProfile;
+export default Profile;

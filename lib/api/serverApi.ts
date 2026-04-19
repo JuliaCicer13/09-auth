@@ -1,13 +1,14 @@
 import { cookies } from 'next/headers';
 import { nextServer } from './api';
+import { User } from './clientApi';
 
-export const checkServerSession = async () => {
+export const  getServerMe = async (): Promise<User> => {
 
   const cookieStore = await cookies();
-  const res = await nextServer.get('/auth/session', {
+const { data } = await nextServer.get('/auth/me', {
     headers: {
       Cookie: cookieStore.toString(),
     },
   });
-  return res;
+  return data;
 };

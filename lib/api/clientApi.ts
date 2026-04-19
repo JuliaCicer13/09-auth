@@ -61,6 +61,7 @@ export type User = {
   photoUrl?: string;
   createdAt: Date;
   updatedAt: Date;
+  username: string;
 };
 
 export const register = async (data: RegisterRequest) => {
