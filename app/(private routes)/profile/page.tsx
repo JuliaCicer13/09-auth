@@ -1,24 +1,43 @@
 import Link from 'next/link';
 import { getServerMe } from '@/lib/api/serverApi';
+import css from "../../../components/ProfilePage/ProfilePage.module.css";
 
 const Profile = async () => {
+
   const user = await getServerMe();
 
   return (
-    <section>
-      <div>
-        <h1>My Profile</h1>
+   <main className={css.mainContent}>
+  <div className={css.profileCard}>
+      <div className={css.header}>
+	     <h1 className={css.formTitle}>Profile Page</h1>
         <Link href="/profile/edit">Edit profile</Link>
-      </div>
-      <div>
-        <h2>Name: {user.username}</h2>
-        <h2>Email: {user.email}</h2>
-        <p>
-          Some description: Lorem ipsum dolor sit amet consectetur adipisicing elit...
-        </p>
-      </div>
-    </section>
+	     <a src="" className={css.editProfileButton}>
+	       Edit Profile
+	     </a>
+	   </div>
+     <div className={css.avatarWrapper}>
+      <img
+        src="Avatar"
+        alt="User Avatar"
+        width={120}
+        height={120}
+        className={css.avatar}
+      />
+    </div>
+    <div className={css.profileInfo}>
+      <p>
+        Username: your_username
+      </p>
+      <p>
+        Email: your_email@example.com
+      </p>
+    </div>
+  </div>
+</main>
   );
 };
 
 export default Profile;
+
+
