@@ -4,7 +4,9 @@ const nextConfig: NextConfig = {
   /* config options here */
   images: {
 	  remotePatterns: [
-	      { protocol: 'https', hostname: 'ac.goit.global' }
+	    { protocol: 'https', hostname: 'ac.goit.global' },
+      { protocol: 'https', hostname: 'picsum.photos' },
+      { protocol: 'https', hostname: 'aliiev-lomach.com' },
 	    ]
       
 	},
