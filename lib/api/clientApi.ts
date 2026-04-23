@@ -1,6 +1,6 @@
 import axios from "axios";
 import type { Note }from "../../types/note";
-
+import { User } from "@/types/user";
 
 const nextServer = axios.create({
 baseURL: "https://notehub-api.goit.study",
@@ -55,19 +55,10 @@ export type RegisterRequest = {
   password: string;
 };
 
-export type User = {
-  username: string;
-  id: string;
-  email: string;
-  photoUrl?: string;
-  createdAt: Date;
-  updatedAt: Date;
-
-};
 
 export const register = async (data: RegisterRequest) => {
    const res = await nextServer.post<User>('/auth/register', data);
-   return res;
+   return res.data;
 }
 
 

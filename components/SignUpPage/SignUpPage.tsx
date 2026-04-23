@@ -1,3 +1,5 @@
+'use client'
+
 import css from "../SignUpPage/SignUpPage.module.css"
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -12,13 +14,11 @@ const SignUp = () => {
   
     const handleSubmit = async (formData: FormData) => {
     try {
-
       const formValues = Object.fromEntries(formData) as RegisterRequest;
+      const user = await register(formValues);
 
-      const res = await register(formValues);
-
-      if (res) {
-         setUser(res)
+      if (user) {
+         setUser(user);
         router.push('/profile');
       } else {
         setError('Invalid email or password');
@@ -36,7 +36,7 @@ const SignUp = () => {
   <>
   <main className={css.mainContent}>
   <h1 className={css.formTitle}>Sign up</h1>
-	<form className={css.form}>
+	<form action={handleSubmit} className={css.form}>
     <div className={css.formGroup}>
       <label htmlFor="email">Email</label>
       <input id="email" type="email" name="email" className={css.input} required />
@@ -52,7 +52,7 @@ const SignUp = () => {
         Register
       </button>
     </div>
-    <p className={css.error}>Error</p>
+    <p className={css.error}>{error}</p>
   </form>
 </main>
   </>
