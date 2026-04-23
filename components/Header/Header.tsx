@@ -16,9 +16,6 @@ return (
             <li>
             <Link href='/profile/edit'>Profile</Link>  
             </li>
-            <li>
-            <Link href='/about'>About</Link>
-            </li>
               <li>
             <Link href="/sign-in">Login</Link>
           </li>
