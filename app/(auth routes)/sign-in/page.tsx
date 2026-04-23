@@ -1,5 +1,5 @@
 "use client"
-import SignUp from '../sign-up/page';
+
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { login , LoginRequest} from '@/lib/api/clientApi';

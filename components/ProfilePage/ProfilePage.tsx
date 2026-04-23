@@ -1,17 +1,19 @@
 import css from "../../../components/ProfilePage/ProfilePage.module.css";
 import Link from 'next/link';
+import { User } from "@/types/user";
 
-const ProfilePage = () => {
+type Props = {
+  user: User;
+};
+
+const ProfilePage = ({user}: Props) => {
  return (
     <>
-    <main className={css.mainContent}>
+<main className={css.mainContent}>
   <div className={css.profileCard}>
-      <div className={css.header}>
+    <div className={css.header}>
 	     <h1 className={css.formTitle}>Profile Page</h1>
            <Link href="/profile/edit">Edit profile</Link>
-	     <a src="" className={css.editProfileButton}>
-	       Edit Profile
-	     </a>
 	   </div>
      <div className={css.avatarWrapper}>
       <img
@@ -24,10 +26,10 @@ const ProfilePage = () => {
     </div>
     <div className={css.profileInfo}>
       <p>
-        Username: your_username
+        Username:{user.username}
       </p>
       <p>
-        Email: your_email@example.com
+        Email: {user.email}
       </p>
     </div>
   </div>
