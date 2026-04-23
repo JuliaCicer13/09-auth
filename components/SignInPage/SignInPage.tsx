@@ -6,9 +6,34 @@ import { useAuthStore } from '@/lib/store/authStore';
 import { ApiError } from '@/app/api/api'
 import css from "../SignInPage/SignInPage.module.css";
 
+const SignIn = () => {
+  const router =  useRouter();
+  const [error, setError] = useState('');
 
+   const setUser = useAuthStore((state) => state.setUser)
+
+  const handleSubmit = async (formData: FormData) => {
+    try {
+        const formValues = Object.fromEntries(formData) as LoginRequest;
+        const user = await login(formValues);
+
+        if (user) {
+            setUser(user)
+         router.push('/profile');
+        } else {
+            setError('Invalid email or password');
+        }
+    } catch (error) {
+        setError(
+            (error as ApiError).response?.data?.error ?? 
+            (error as ApiError).message ??
+            'Ooops...some error'
+        )
+    }
+  };
+  return (<>
 <main className={css.mainContent}>
- <form className={css.form}>
+ <form action={handleSubmit} className={css.form}>
     <h1 className={css.formTitle}>Sign in</h1>
 
     <div className={css.formGroup}>
@@ -29,3 +54,6 @@ import css from "../SignInPage/SignInPage.module.css";
     <p className={css.error}>{error}</p>
   </form>
 </main>
+</>)
+}
+export default SignIn;

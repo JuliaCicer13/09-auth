@@ -6,7 +6,6 @@ type AuthStore = {
     user: User | null;
     setUser: (user: User) => void;
     clearIsAuthenticated: () => void;
-
 };
 
 

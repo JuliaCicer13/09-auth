@@ -1,14 +1,10 @@
-import axios from "axios";
+import { api } from "@/app/api/api";
 import type { Note }from "../../types/note";
 import { User } from "@/types/user";
 
-const nextServer = axios.create({
-baseURL: "https://notehub-api.goit.study",
- withCredentials: true,
-})
 
 interface FetchNotesResponse {
-    notes: Note[];
+    notes: Note[]; 
     totalPages: number;
 }
 
@@ -24,7 +20,7 @@ export const fetchNotes = async (
   page: number,
   tag?: string,
 ) : Promise<FetchNotesResponse> => {
-  const response = await nextServer.get<FetchNotesResponse>("", {
+  const response = await api.get<FetchNotesResponse>("", {
     params: {
       search,
       page,
@@ -36,17 +32,17 @@ export const fetchNotes = async (
 
 
 export const fetchNoteById = async (id: string): Promise<Note> => {
-  const response = await nextServer.get<Note>(`/${id}`);
+  const response = await api.get<Note>(`/${id}`);
   return response.data;
 };
 
 export const createNote = async (payload: CreateNotePayload): Promise<Note> => {
-  const response = await nextServer.post<Note>("", payload);
+  const response = await api.post<Note>("", payload);
   return response.data;
 };
 
 export const deleteNote = async (noteId: string): Promise<Note> => {
-  const response = await nextServer.delete<Note>(`/${noteId}`);
+  const response = await api.delete<Note>(`/${noteId}`);
   return response.data;
 }
 
@@ -57,7 +53,7 @@ export type RegisterRequest = {
 
 
 export const register = async (data: RegisterRequest) => {
-   const res = await nextServer.post<User>('/auth/register', data);
+   const res = await api.post<User>('/auth/register', data);
    return res.data;
 }
 
@@ -68,8 +64,8 @@ export type LoginRequest = {
 };
 
 export const login = async (data: LoginRequest) => {
-   const res = await nextServer.post<User>('/auth/login', data);
-   return res;
+   const res = await api.post<User>('/auth/login', data);
+   return res.data;
 };
 
 type CheckSessionRequest = {
@@ -77,17 +73,17 @@ type CheckSessionRequest = {
 };
 
 export const checkSession = async () => {
-  const res = await nextServer.get<CheckSessionRequest>('/auth/session');
+  const res = await api.get<CheckSessionRequest>('/auth/session');
   return res.data.success;
 }
 
 export const getMe = async () => {
-  const {data} = await nextServer.get<User>('/auth/me');
+  const {data} = await api.get<User>('/auth/me');
   return data;
 }
 
 export const logout = async (): Promise<void> => {
-   await nextServer.post('/auth/logout');
+   await api.post('/auth/logout');
 }
 
 export type UpdateUserRequest = {
@@ -96,13 +92,13 @@ export type UpdateUserRequest = {
 };
 
 export const updateMe = async (payload: UpdateUserRequest) => {
-  const res = await nextServer.put<User>('/auth/me', payload);
+  const res = await api.put<User>('/auth/me', payload);
   return res.data;
 };
 
 export const uploadImage = async (file: File): Promise<string> => {
   const formData = new FormData();
   formData.append('file', file);
-  const { data } = await nextServer.post('/upload', formData);
+  const { data } = await api.post('/upload', formData);
   return data.url;
 };

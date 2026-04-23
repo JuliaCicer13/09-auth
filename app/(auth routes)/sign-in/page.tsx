@@ -1,55 +1,13 @@
-"use client"
+import SignIn from "@/components/SignInPage/SignInPage"
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { login , LoginRequest} from '@/lib/api/clientApi';
-import { useAuthStore } from '@/lib/store/authStore';
-import { ApiError } from '@/app/api/api'
-
-const SignIn = () => {
-  const router =  useRouter();
-  const [error, setError] = useState('');
-
-   const setUser = useAuthStore((state) => state.setUser)
-
-  const handleSubmit = async (formData: FormData) => {
-    try {
-        const formValues = Object.fromEntries(formData) as LoginRequest;
-        const res = await login(formValues);
-
-        if (res) {
-            setUser(res)
-         router.push('/profile');
-        } else {
-            setError('Invalid email or password');
-        }
-    } catch (error) {
-        setError(
-            (error as ApiError).response?.data?.error ?? 
-            (error as ApiError).message ??
-            'Ooops...some error'
-        )
-    }
-  };
-
+const SignInPage = () => {
   return (
-    <form action={handleSubmit}>
-       <h1>Sign In</h1>
-       <label>
-        Email 
-        <input type="email" name="email" required/>
-       </label>
-       <label>
-          Password
-        <input type="password" name="password" required/>
-       </label>
-       <button type="submit">Log In</button>
-       {error && <p>{error}</p>}
-    </form>
-  );
-};
-
-export default SignIn;
+    <>
+    <SignIn/>
+    </>
+  )
+}
+export default SignInPage;
 
 
 
