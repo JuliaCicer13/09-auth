@@ -56,12 +56,13 @@ export type RegisterRequest = {
 };
 
 export type User = {
+  username: string;
   id: string;
   email: string;
   photoUrl?: string;
   createdAt: Date;
   updatedAt: Date;
-  username: string;
+
 };
 
 export const register = async (data: RegisterRequest) => {
@@ -99,7 +100,7 @@ export const logout = async (): Promise<void> => {
 }
 
 export type UpdateUserRequest = {
-  userName?: string;
+  username?: string;
   photoUrl?: string;
 };
 

@@ -1,26 +1,70 @@
+'use client'
+
 import css from "../EditProfilePage/EditProflePage.module.css";
+import { useState, useEffect } from 'react'
+import AvatarPicker from '@/components/AvatarPicker/AvatarPicker'
+import { getMe, updateMe, uploadImage  } from '@/lib/api/clientApi';
+import { useMutation, useQueryClient} from '@tanstack/react-query';
 
-<main className={css.mainContent}>
-  <div className={css.profileCard}>
-    <h1 className={css.formTitle}>Edit Profile</h1>
+const EditProfile = () => {
+  const [userName, setUserName] = useState('');
+  const [photoUrl, setPhotoUrl] = useState('');
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const queryClient = useQueryClient();
 
-    <img src="avatar"
-      alt="User Avatar"
-      width={120}
-      height={120}
-      className={css.avatar}
-    />
+  useEffect(() => {
+    getMe().then((user) => {
+      setUserName(user.username ?? '');
+      setPhotoUrl(user.photoUrl ?? '');
+    });
+  }, []);
+  
+  const {mutate, } = useMutation({
+    mutationFn: updateMe,
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ["users"]});
+    },
+  });
 
-    <form className={css.profileInfo}>
-      <div className={css.usernameWrapper}>
-        <label htmlFor="username">Username:</label>
-        <input id="username"
-          type="text"
-          className={css.input}
-        />
-      </div>
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUserName(event.target.value);
+  };
 
-      <p>Email: user_email@example.com</p>
+ const handleSaveUser = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      const newPhotoUrl = imageFile ? await uploadImage(imageFile) : '';
+      await updateMe({ username, photoUrl: newPhotoUrl });
+    } catch (error) {
+      console.error('Oops, some error:', error);
+    }
+  };
+
+  return (
+    <main className={css.mainContent}>
+   <div className={css.profileCard}>
+       <h1 className={css.formTitle}>Edit Profile</h1>
+      <br />
+      <AvatarPicker profilePhotoUrl={photoUrl}  onChangePhoto={setImageFile}  />
+      <br />
+       <img src="avatar"
+       alt="User Avatar"
+       width={120}
+       height={120}
+       className={css.avatar}
+     />
+      <form className={css.profileInfo} onSubmit={handleSaveUser}>
+       <div className={css.usernameWrapper}>
+         <label htmlFor="username">Username:</label>
+         <input id="username" 
+               type='text' 
+               className={css.input} 
+               value={userName}
+               onChange={handleChange} />
+
+         <button type='submit'>Save user</button>
+       </div>
+        <p>Email: user_email@example.com</p>
 
       <div className={css.actions}>
         <button type="submit" className={css.saveButton}>
@@ -30,6 +74,15 @@ import css from "../EditProfilePage/EditProflePage.module.css";
           Cancel
         </button>
       </div>
-    </form>
-  </div>
+      </form>
+    </div>
 </main>
+   
+  )
+}
+
+export default EditProfile;
+
+
+    
+

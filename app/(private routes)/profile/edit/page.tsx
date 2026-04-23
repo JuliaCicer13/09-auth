@@ -1,48 +1,50 @@
-'use client'
+import EditProfile from '@/components/EditProfilePage/EditProfilerPage';
+import { updateMe } from '@/lib/api/clientApi';
+import { Metadata } from 'next';
+import { QueryClient, HydrationBoundary, dehydrate } from  "@tanstack/react-query";
 
-import { useState, useEffect } from 'react'
-import AvatarPicker from '@/components/AvatarPicker/AvatarPicker'
-import { getMe, updateMe, uploadImage  } from '@/lib/api/clientApi';
+type Props = {
+ params: Promise<{id: string[]}>;
+};
 
-const EditProfile = () => {
-  const [userName, setUserName] = useState('');
-  const [photoUrl, setPhotoUrl] = useState('');
-  const [imageFile, setImageFile] = useState<File | null>(null);
-
-	useEffect(() => {
-    getMe().then((user) => {
-      setUserName(user.username ?? '');
-      setPhotoUrl(user.photoUrl ?? '');
-    });
-  }, []);
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUserName(event.target.value);
-  };
-
- const handleSaveUser = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    try {
-      const newPhotoUrl = imageFile ? await uploadImage(imageFile) : '';
-      await updateMe({ userName, photoUrl: newPhotoUrl });
-    } catch (error) {
-      console.error('Oops, some error:', error);
-    }
-  };
-
-  return (
-    <div>
-      <h1>Edit profile</h1>
-      <br />
-      <AvatarPicker profilePhotoUrl={photoUrl}  onChangePhoto={setImageFile}  />
-      <br />
-      <form onSubmit={handleSaveUser}>
-        <input type='text' value={userName} onChange={handleChange} />
-        <br />
-        <button type='submit'>Save user</button>
-      </form>
-    </div>
-  )
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const {id} = await params;
+  const user = await updateMe(username)
+  
+    return {
+      title: `Username: ${user.username}`,
+      description: `Email: ${user.email}`,
+      openGraph: {
+        title: `Username: ${user.username}`,
+        description:  `Email: ${user.email}`,
+        url: `https://notehub-api.goit.study${id}`,
+        siteName: 'NoteHub',
+        images: [
+          {
+            url: "https://ac.goit.global/fullstack/react/default-avatar.jpg",
+            width: 1200,
+            height: 630,
+          },
+        ],
+        type: 'profile',
+      },
 }
+}
+const Profile = async ({params}: Props) => {
+  const {id} =  await params;
+  const queryClient = new QueryClient();
 
-export default EditProfile;
+  await queryClient.prefetchQuery({
+    queryKey: ["users", id],
+    queryFn: () => updateMe(payload),
+  });
+
+  return <HydrationBoundary state={dehydrate(queryClient)}>
+      <EditProfile/>
+   </HydrationBoundary>
+};
+
+export default Profile;
+
+
+

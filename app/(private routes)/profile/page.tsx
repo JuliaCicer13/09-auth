@@ -1,43 +1,50 @@
-import Link from 'next/link';
-import { getServerMe } from '@/lib/api/serverApi';
-import css from "../../../components/ProfilePage/ProfilePage.module.css";
+import ProfilePage from '@/components/ProfilePage/ProfilePage';
+import { getMe } from '@/lib/api/clientApi';
+import { Metadata } from 'next';
+import { QueryClient, HydrationBoundary, dehydrate } from  "@tanstack/react-query";
 
-const Profile = async () => {
+type Props = {
+ params: Promise<{id: string[]}>;
+};
 
-  const user = await getServerMe();
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const {id} = await params;
+  const user = await getMe()
+  
+    return {
+      title: `Username: ${user.username}`,
+      description: `Email: ${user.email}`,
+      openGraph: {
+        title: `Username: ${user.username}`,
+        description:  `Email: ${user.email}`,
+        url: `https://notehub-api.goit.study${id}`,
+        siteName: 'NoteHub',
+        images: [
+          {
+            url: "https://ac.goit.global/fullstack/react/default-avatar.jpg",
+            width: 1200,
+            height: 630,
+          },
+        ],
+        type: 'profile',
+      },
+}
+}
+const Profile = async ({params}: Props) => {
+  const {id} =  await params;
+  const queryClient = new QueryClient();
 
-  return (
-   <main className={css.mainContent}>
-  <div className={css.profileCard}>
-      <div className={css.header}>
-	     <h1 className={css.formTitle}>Profile Page</h1>
-        <Link href="/profile/edit">Edit profile</Link>
-	     <a src="" className={css.editProfileButton}>
-	       Edit Profile
-	     </a>
-	   </div>
-     <div className={css.avatarWrapper}>
-      <img
-        src="Avatar"
-        alt="User Avatar"
-        width={120}
-        height={120}
-        className={css.avatar}
-      />
-    </div>
-    <div className={css.profileInfo}>
-      <p>
-        Username: your_username
-      </p>
-      <p>
-        Email: your_email@example.com
-      </p>
-    </div>
-  </div>
-</main>
-  );
+  await queryClient.prefetchQuery({
+    queryKey: ["users", id],
+    queryFn: () => getMe(),
+  });
+
+  return <HydrationBoundary state={dehydrate(queryClient)}>
+      <ProfilePage/>
+   </HydrationBoundary>
 };
 
 export default Profile;
+
 
 
