@@ -78,7 +78,7 @@ export const checkSession = async () => {
 }
 
 export const getMe = async () => {
-  const {data} = await api.get<User>('/auth/me');
+  const {data} = await api.get<User>('/users/me');
   return data;
 }
 
@@ -92,7 +92,7 @@ export type UpdateUserRequest = {
 };
 
 export const updateMe = async (payload: UpdateUserRequest) => {
-  const res = await api.put<User>('/auth/me', payload);
+  const res = await api.put<User>('/users/me', payload);
   return res.data;
 };
 

@@ -6,7 +6,7 @@ import { api } from '@/app/api/api';
 export const getServerMe = async (): Promise<User> => {
 
 const cookieStore = await cookies();
-const { data } = await api.get('/auth/me', {
+const { data } = await api.get('/users/me', {
     headers: {
       Cookie: cookieStore.toString(),
     },
@@ -50,7 +50,7 @@ export const checkSession = async () => {
 }
 
 export const getMe = async () => {
-  const {data} = await api.get<User>('/auth/me');
+  const {data} = await api.get<User>('/users/me');
   return data;
 }
 
