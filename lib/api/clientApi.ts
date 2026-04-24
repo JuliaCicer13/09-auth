@@ -102,3 +102,4 @@ export const uploadImage = async (file: File): Promise<string> => {
   const { data } = await api.post('/upload', formData);
   return data.url;
 };
+

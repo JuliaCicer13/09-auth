@@ -53,3 +53,13 @@ export const getMe = async () => {
   const {data} = await api.get<User>('/auth/me');
   return data;
 }
+
+export const getServerMeFull = async () => {
+  const cookieStore = await cookies();
+ 
+  return await api.get('/auth/me', {
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
+  });
+};

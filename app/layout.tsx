@@ -14,8 +14,8 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "Our Next App Page",
-  description: "Welcome to our app page!",
+  title: "Note Hub",
+  description: "There are some notes for your attention",
       openGraph: {
         title: `Note Hub`,
         description: "There are some notes for your attention",
@@ -43,7 +43,7 @@ export default function RootLayout({
  }>) {
   return (
     <html lang="en">
-      <body className={`${roboto.variable}`}>
+      <body className={roboto.variable}>
         <TanStackProvider>
            <AuthProvider> 
           <Header />

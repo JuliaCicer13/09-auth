@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { login , LoginRequest} from '@/lib/api/clientApi';
 import { useAuthStore } from '@/lib/store/authStore';
-import { ApiError } from '@/app/api/api'
+import { ApiError } from '@/lib/api/api'
 import css from "../SignInPage/SignInPage.module.css";
 
 const SignIn = () => {
@@ -51,7 +51,7 @@ const SignIn = () => {
         Log in
       </button>
     </div>
-    <p className={css.error}>{error}</p>
+    {error && <p className={css.error}>{error}</p>}
   </form>
 </main>
 </>)
