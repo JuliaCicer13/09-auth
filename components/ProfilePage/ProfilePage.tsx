@@ -13,13 +13,11 @@ const ProfilePage = ({user}: Props) => {
   <div className={css.profileCard}>
     <div className={css.header}>
 	     <h1 className={css.formTitle}>Profile Page</h1>
-       <button className={css.editProfileButton} type="button">
-         <Link href="/profile/edit">Edit profile</Link>
-       </button>
+         <Link className={css.editProfileButton} href="/profile/edit">Edit profile</Link>
 	   </div>
      <div className={css.avatarWrapper}>
       <img
-        src="Avatar"
+        src={user.avatar || "https://ac.goit.global/fullstack/react/default-avatar.jpg"}
         alt="User Avatar"
         width={120}
         height={120}

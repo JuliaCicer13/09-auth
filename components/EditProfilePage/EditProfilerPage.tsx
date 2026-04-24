@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react'
 import AvatarPicker from '@/components/AvatarPicker/AvatarPicker'
 import { getMe, updateMe, uploadImage  } from '@/lib/api/clientApi';
 import { useMutation, useQueryClient} from '@tanstack/react-query';
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const EditProfile = () => {
   const [userName, setUserName] = useState('');
@@ -34,7 +36,7 @@ const EditProfile = () => {
     event.preventDefault();
     try {
       const newPhotoUrl = imageFile ? await uploadImage(imageFile) : '';
-      await updateMe({ username, photoUrl: newPhotoUrl });
+      await updateMe({ username: userName, photoUrl: newPhotoUrl });
     } catch (error) {
       console.error('Oops, some error:', error);
     }
@@ -47,7 +49,7 @@ const EditProfile = () => {
       <br />
       <AvatarPicker profilePhotoUrl={photoUrl}  onChangePhoto={setImageFile}  />
       <br />
-       <img src="avatar"
+       <Image src="avatar"
        alt="User Avatar"
        width={120}
        height={120}
