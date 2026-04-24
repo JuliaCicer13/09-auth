@@ -2,54 +2,45 @@
 
 import css from "../EditProfilePage/EditProflePage.module.css";
 import { useState, useEffect } from 'react'
-import AvatarPicker from '@/components/AvatarPicker/AvatarPicker'
 import { getMe, updateMe, uploadImage  } from '@/lib/api/clientApi';
-import { useMutation, useQueryClient} from '@tanstack/react-query';
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 const EditProfile = () => {
+  const router = useRouter();
+
+  const [email, setEmail] = useState('');
   const [userName, setUserName] = useState('');
   const [photoUrl, setPhotoUrl] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const queryClient = useQueryClient();
+
 
   useEffect(() => {
     getMe().then((user) => {
       setUserName(user.username ?? '');
+      setEmail(user.email ?? '');
       setPhotoUrl(user.photoUrl ?? '');
     });
   }, []);
-  
-  const {mutate, } = useMutation({
-    mutationFn: updateMe,
-    onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["users"]});
-    },
-  });
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUserName(event.target.value);
-  };
 
  const handleSaveUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const newPhotoUrl = imageFile ? await uploadImage(imageFile) : '';
+      const newPhotoUrl = imageFile ? await uploadImage(imageFile) : photoUrl;
       await updateMe({ username: userName, photoUrl: newPhotoUrl });
+
+      router.push('/profile');
     } catch (error) {
-      console.error('Oops, some error:', error);
+      console.error(error);
     }
   };
 
   return (
     <main className={css.mainContent}>
-   <div className={css.profileCard}>
+      <div className={css.profileCard}>
        <h1 className={css.formTitle}>Edit Profile</h1>
-      <br />
-      <AvatarPicker profilePhotoUrl={photoUrl}  onChangePhoto={setImageFile}  />
-      <br />
-       <Image src="avatar"
+       
+       <Image src={photoUrl || "https://ac.goit.global/fullstack/react/default-avatar.jpg"}
        alt="User Avatar"
        width={120}
        height={120}
@@ -62,17 +53,18 @@ const EditProfile = () => {
                type='text' 
                className={css.input} 
                value={userName}
-               onChange={handleChange} />
-
-         <button type='submit'>Save user</button>
+               onChange={(e) => setUserName(e.target.value)} />
        </div>
-        <p>Email: user_email@example.com</p>
+        <p>Email: {email}</p>
 
       <div className={css.actions}>
         <button type="submit" className={css.saveButton}>
           Save
         </button>
-        <button type="button" className={css.cancelButton}>
+        <button 
+            type="button" 
+            className={css.cancelButton}
+            onClick={() => router.push('/profile')}>
           Cancel
         </button>
       </div>
