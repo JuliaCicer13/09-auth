@@ -1,9 +1,13 @@
 import ProfilePage from '@/components/ProfilePage/ProfilePage';
 import { getServerMe } from '@/lib/api/serverApi';
 import { Metadata } from 'next';
+import { User } from "@/types/user";
 
+type Props = {
+  user: User;
+};
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({}: Props): Promise<Metadata> {
 
   const user = await getServerMe()
   
@@ -13,9 +17,8 @@ export async function generateMetadata(): Promise<Metadata> {
     };
  }
 
-const Profile = async () => {
-  const user = getServerMe();
-  
+const Profile = ({user}: Props) => {
+
   return <ProfilePage user={user}/>
 
 };

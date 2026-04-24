@@ -5,9 +5,9 @@
 }
 
 .logoutButton {
-  background: transparent;
+  background-color:#4384e6;
   border: 1px solid white;
-  color: white;
+  color: rgb(241, 241, 241);
   padding: 0.3rem 0.6rem;
   border-radius: 4px;
   cursor: pointer;
@@ -16,7 +16,7 @@
 }
 
 .logoutButton:hover {
-  background-color: rgb(201, 34, 34);
+  background-color: rgb(184, 1, 1);
   color: #333;
 }
 
@@ -27,7 +27,7 @@
 
 .navigationLink {
   text-decoration: none;
-  color: rgb(110, 10, 150);
+  color: rgb(0, 0, 0);
   font-size: 1rem;
 }
 

@@ -1,5 +1,6 @@
 .mainContent {
   flex: 1;
+  background-color: #b5ced4;
 }
 
 .form {
@@ -9,7 +10,7 @@
   max-width: 400px;
   margin: 40px auto;
   padding: 24px;
-  background-color: #fff;
+  background-color: #0cb4df;
   border: 1px solid #dee2e6;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -20,7 +21,7 @@
   font-weight: 600;
   text-align: center;
   margin-bottom: 8px;
-  color: #212529;
+  color: #1c5288;
 }
 
 .formGroup {

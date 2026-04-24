@@ -13,7 +13,7 @@ const ProfilePage = ({user}: Props) => {
   <div className={css.profileCard}>
     <div className={css.header}>
 	     <h1 className={css.formTitle}>Profile Page</h1>
-       <button type="button">
+       <button className={css.editProfileButton} type="button">
          <Link href="/profile/edit">Edit profile</Link>
        </button>
 	   </div>

@@ -1,5 +1,6 @@
 .main {
   flex: 1;
+  background-color: rgb(171, 184, 226);
 }
 
 .container {
@@ -12,9 +13,13 @@
 .title {
   font-size: 36px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #140a9ec4;
   margin-bottom: 60px;
   text-align: center;
+  text-transform:capitalize;
+  text-decoration-line: overline;
+  text-decoration:overline;
+  text-decoration-color: aquamarine;
 }
 
 .description {
