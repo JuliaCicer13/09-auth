@@ -1,4 +1,6 @@
-import css from "../../../components/ProfilePage/ProfilePage.module.css";
+'use client'
+
+import css from "../ProfilePage/ProfilePage.module.css";
 import Link from 'next/link';
 import { User } from "@/types/user";
 
