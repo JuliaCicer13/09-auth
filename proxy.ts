@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerMeFull } from "./lib/api/serverApi";
+import { getMe } from "./lib/api/serverApi";
 import { parse } from "cookie";
 
 const privateRoutes = ["/profile", "/notes/filter"];
@@ -20,7 +20,7 @@ export async function proxy(request: NextRequest) {
 
       try {
 
-        const response = await getServerMeFull();
+        const response = await getMe();
         const setCookie = response.headers["set-cookie"];
 
         if (setCookie) {
