@@ -52,7 +52,7 @@ export async function proxy(request: NextRequest) {
 
           if (isPublic) {
 
-            return NextResponse.redirect(new URL("/profile", request.url));
+            return NextResponse.redirect(new URL("/", request.url));
           }
           return res;
         }
@@ -74,7 +74,7 @@ export async function proxy(request: NextRequest) {
 
   if (isPublic) {
 
-    return NextResponse.redirect(new URL("/profile", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   return NextResponse.next();

@@ -41,7 +41,7 @@ export const fetchNotes = async (
 
 export const fetchNoteById = async (id: string): Promise<Note> => {
   const cookieStore = await cookies();
-  const response = await api.get<Note>("/notes", {
+  const response = await api.get<Note>(`/notes/${id}`, {
       headers: {
       Cookie: cookieStore.toString(),
     },
@@ -74,13 +74,3 @@ export const getMe = async () => {
   );
  
 }
-
-export const getServerMeFull = async () => {
-  const cookieStore = await cookies();
- 
-  return await api.get('/auth/session', {
-    headers: {
-      Cookie: cookieStore.toString(),
-    },
-  });
-};

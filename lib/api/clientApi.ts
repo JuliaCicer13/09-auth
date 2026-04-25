@@ -32,7 +32,7 @@ export const fetchNotes = async (
 
 
 export const fetchNoteById = async (id: string): Promise<Note> => {
-  const response = await api.get<Note>("/notes");
+  const response = await api.get<Note>(`/notes/${id}`);
   return response.data;
 };
 
@@ -41,8 +41,8 @@ export const createNote = async (payload: CreateNotePayload): Promise<Note> => {
   return response.data;
 };
 
-export const deleteNote = async (noteId: string): Promise<Note> => {
-  const response = await api.delete<Note>("/notes");
+export const deleteNote = async (id: string): Promise<Note> => {
+  const response = await api.delete<Note>(`/notes/${id}`);
   return response.data;
 }
 
