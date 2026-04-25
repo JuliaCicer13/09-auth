@@ -1,4 +1,3 @@
-import { QueryClient, HydrationBoundary, dehydrate } from  "@tanstack/react-query";
 import NotesClient from "./Notes.client";
 import { Metadata } from "next";
 
@@ -34,11 +33,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function NotePage ({ params }: Props) {
-   const queryClient = new QueryClient();
    const {slug} = await params;
 
 
-   return <HydrationBoundary state={dehydrate(queryClient)}>
+   return (
       <NotesClient tag={slug[0]}/>
-   </HydrationBoundary>
+   )
 }

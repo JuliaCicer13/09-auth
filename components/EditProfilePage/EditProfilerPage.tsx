@@ -2,7 +2,7 @@
 
 import css from "../EditProfilePage/EditProflePage.module.css";
 import { useState, useEffect } from 'react'
-import { getMe, updateMe, uploadImage  } from '@/lib/api/clientApi';
+import { getMe, updateMe,} from '@/lib/api/clientApi';
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -12,22 +12,19 @@ const EditProfile = () => {
   const [email, setEmail] = useState('');
   const [userName, setUserName] = useState('');
   const [photoUrl, setPhotoUrl] = useState('');
-  const [imageFile, setImageFile] = useState<File | null>(null);
 
 
   useEffect(() => {
     getMe().then((user) => {
       setUserName(user.username ?? '');
       setEmail(user.email ?? '');
-      setPhotoUrl(user.photoUrl ?? '');
     });
   }, []);
 
  const handleSaveUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const newPhotoUrl = imageFile ? await uploadImage(imageFile) : photoUrl;
-      await updateMe({ username: userName, photoUrl: newPhotoUrl });
+      await updateMe({ username: userName,});
 
       router.push('/profile');
     } catch (error) {

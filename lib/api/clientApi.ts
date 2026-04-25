@@ -20,7 +20,7 @@ export const fetchNotes = async (
   page: number,
   tag?: string,
 ) : Promise<FetchNotesResponse> => {
-  const response = await api.get<FetchNotesResponse>("", {
+  const response = await api.get<FetchNotesResponse>("/notes", {
     params: {
       search,
       page,
@@ -32,17 +32,17 @@ export const fetchNotes = async (
 
 
 export const fetchNoteById = async (id: string): Promise<Note> => {
-  const response = await api.get<Note>(`/${id}`);
+  const response = await api.get<Note>("/notes");
   return response.data;
 };
 
 export const createNote = async (payload: CreateNotePayload): Promise<Note> => {
-  const response = await api.post<Note>("", payload);
+  const response = await api.post<Note>("/notes", payload);
   return response.data;
 };
 
 export const deleteNote = async (noteId: string): Promise<Note> => {
-  const response = await api.delete<Note>(`/${noteId}`);
+  const response = await api.delete<Note>("/notes");
   return response.data;
 }
 
@@ -92,14 +92,8 @@ export type UpdateUserRequest = {
 };
 
 export const updateMe = async (payload: UpdateUserRequest) => {
-  const res = await api.put<User>('/users/me', payload);
+  const res = await api.patch<User>('/users/me', payload);
   return res.data;
 };
 
-export const uploadImage = async (file: File): Promise<string> => {
-  const formData = new FormData();
-  formData.append('file', file);
-  const { data } = await api.post('/upload', formData);
-  return data.url;
-};
 

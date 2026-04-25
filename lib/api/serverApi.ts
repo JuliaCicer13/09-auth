@@ -24,11 +24,15 @@ export const fetchNotes = async (
   page: number,
   tag?: string,
 ) : Promise<FetchNotesResponse> => {
-  const response = await api.get<FetchNotesResponse>("", {
+  const cookieStore = await cookies();
+  const response = await api.get<FetchNotesResponse>("/notes", {
     params: {
       search,
       page,
       tag,
+    },
+      headers: {
+      Cookie: cookieStore.toString(),
     },
   });
   return response.data;
@@ -36,7 +40,12 @@ export const fetchNotes = async (
 
 
 export const fetchNoteById = async (id: string): Promise<Note> => {
-  const response = await api.get<Note>(`/${id}`);
+  const cookieStore = await cookies();
+  const response = await api.get<Note>("/notes", {
+      headers: {
+      Cookie: cookieStore.toString(),
+    },
+  });
   return response.data;
 };
 
@@ -45,19 +54,31 @@ type CheckSessionRequest = {
 };
 
 export const checkSession = async () => {
-  const res = await api.get<CheckSessionRequest>('/auth/session');
-  return res.data.success;
+   const cookieStore = await cookies();
+  return await api.get<CheckSessionRequest>('/auth/session',{
+       headers: {
+      Cookie: cookieStore.toString(),
+    },
+  });
+  
 }
 
 export const getMe = async () => {
-  const {data} = await api.get<User>('/users/me');
-  return data;
+  const cookieStore = await cookies();
+  return await api.get<User>('/users/me',
+    {
+       headers: {
+      Cookie: cookieStore.toString(),
+    },
+    }
+  );
+ 
 }
 
 export const getServerMeFull = async () => {
   const cookieStore = await cookies();
  
-  return await api.get('/auth/me', {
+  return await api.get('/auth/session', {
     headers: {
       Cookie: cookieStore.toString(),
     },
