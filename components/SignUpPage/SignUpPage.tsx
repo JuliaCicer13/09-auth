@@ -7,7 +7,7 @@ import { register, RegisterRequest } from '@/lib/api/clientApi';
 import { useAuthStore } from '@/lib/store/authStore';
 import { ApiError } from '@/app/api/api';
 
-const SignUp = () => {
+const SignUpPage = () => {
     const router = useRouter();
     const [error, setError] = useState('');
     const setUser = useAuthStore((state) => state.setUser)
@@ -59,4 +59,4 @@ const SignUp = () => {
   )
 }
 
-export default SignUp;
+export default SignUpPage;

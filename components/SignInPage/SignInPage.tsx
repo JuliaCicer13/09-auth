@@ -6,7 +6,7 @@ import { useAuthStore } from '@/lib/store/authStore';
 import { ApiError } from '@/lib/api/api'
 import css from "../SignInPage/SignInPage.module.css";
 
-const SignIn = () => {
+const SignInPage = () => {
   const router =  useRouter();
   const [error, setError] = useState('');
 
@@ -56,4 +56,4 @@ const SignIn = () => {
 </main>
 </>)
 }
-export default SignIn;
+export default SignInPage;
