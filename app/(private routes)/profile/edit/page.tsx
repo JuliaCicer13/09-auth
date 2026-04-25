@@ -23,7 +23,7 @@ const EditProfile = () => {
 
       setUserName(user.username ?? '');
       setEmail(user.email ?? '');
-      setPhotoUrl(user.photoUrl ?? '');
+      setPhotoUrl(user.avatar ?? '');
 
     };
 
@@ -80,7 +80,7 @@ const EditProfile = () => {
             <button
               type="button"
               className={css.cancelButton}
-              onClick={() => router.push('/profile')}
+              onClick={() => router.back()}
             >
               Cancel
             </button>

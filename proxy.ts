@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { parse } from "cookie";
 
 const privateRoutes = ["/profile", "/notes/filter"];
 const publicRoutes = ["/sign-in", "/sign-up"];
@@ -32,7 +33,18 @@ export async function proxy(request: NextRequest) {
         if (setCookie) {
           const response = NextResponse.next();
 
-          response.headers.set("set-cookie", setCookie);
+          const cookiesArr = setCookie.split(",");
+
+          cookiesArr.forEach((cookieStr) => {
+            const parsed = parse(cookieStr);
+
+            if (parsed.accessToken) {
+              response.cookies.set("accessToken", parsed.accessToken);
+            }
+            if (parsed.refreshToken) {
+              response.cookies.set("refreshToken", parsed.refreshToken);
+            }
+          });
 
           if (isPublic) {
             return NextResponse.redirect(new URL("/", request.url));
