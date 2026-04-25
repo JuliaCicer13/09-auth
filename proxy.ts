@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getMe } from "./lib/api/serverApi";
-import { parse } from "cookie";
 
 const privateRoutes = ["/profile", "/notes/filter"];
 const publicRoutes = ["/sign-in", "/sign-up"];
@@ -8,72 +6,59 @@ const publicRoutes = ["/sign-in", "/sign-up"];
 export async function proxy(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
+
   const accessToken = request.cookies.get("accessToken")?.value;
   const refreshToken = request.cookies.get("refreshToken")?.value;
+
   const isPrivate = privateRoutes.some((r) => pathname.startsWith(r));
   const isPublic = publicRoutes.some((r) => pathname.startsWith(r));
-
 
   if (!accessToken) {
 
     if (refreshToken) {
-
       try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/auth/session`,
+          {
+            method: "GET",
+            headers: {
+              Cookie: `refreshToken=${refreshToken}`,
+            },
+          }
+        );
 
-        const response = await getMe();
-        const setCookie = response.headers["set-cookie"];
+        const setCookie = res.headers.get("set-cookie");
 
         if (setCookie) {
+          const response = NextResponse.next();
 
-          const res = NextResponse.next();
-          const cookiesArr = Array.isArray(setCookie)
-
-            ? setCookie
-            : [setCookie];
-
-          cookiesArr.forEach((cookieStr) => {
-
-            const parsed = parse(cookieStr);
-
-            if (parsed.accessToken) {
-
-              res.cookies.set("accessToken", parsed.accessToken);
-
-            }
-
-            if (parsed.refreshToken) {
-
-              res.cookies.set("refreshToken", parsed.refreshToken);
-
-            }
-
-          });
-
+          response.headers.set("set-cookie", setCookie);
 
           if (isPublic) {
-
             return NextResponse.redirect(new URL("/", request.url));
           }
-          return res;
+          return response;
         }
 
       } catch (e) {
 
-
+        if (isPrivate) {
+          return NextResponse.redirect(new URL("/sign-in", request.url));
+        }
       }
     }
-
 
     if (isPrivate) {
       return NextResponse.redirect(new URL("/sign-in", request.url));
     }
 
     return NextResponse.next();
+
   }
 
 
-  if (isPublic) {
 
+  if (isPublic) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
@@ -82,5 +67,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/profile/:path*", "/sign-in", "/sign-up","/notes/filter/:path*"],
-};
+  matcher: ["/profile/:path*", "/sign-in", "/sign-up", "/notes/filter/:path*"],
+}
