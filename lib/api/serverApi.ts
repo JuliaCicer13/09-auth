@@ -3,16 +3,24 @@ import { User } from '@/types/user';
 import type { Note }from "../../types/note";
 import { api } from '@/app/api/api';
 
-export const getServerMe = async (): Promise<User> => {
 
-const cookieStore = await cookies();
-const { data } = await api.get('/users/me', {
-    headers: {
-      Cookie: cookieStore.toString(),
-    },
-  });
+export const getServerMe = async () => {
+  const cookieStore = await cookies();
+  const cookieHeader = cookieStore
+    .getAll()
+    .map((c) => `${c.name}=${c.value}`)
+    .join('; ');
+
+  const { data } = await api.get(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/auth/me`,
+    {
+      headers: {
+        Cookie: cookieHeader,
+      },
+    }
+  );
   return data;
-};
+}
 
 interface FetchNotesResponse {
     notes: Note[];
