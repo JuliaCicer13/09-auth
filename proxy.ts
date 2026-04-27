@@ -7,15 +7,12 @@ const publicRoutes = ["/sign-in", "/sign-up"];
 export async function proxy(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
-
   const accessToken = request.cookies.get("accessToken")?.value;
   const refreshToken = request.cookies.get("refreshToken")?.value;
-
   const isPrivate = privateRoutes.some((r) => pathname.startsWith(r));
   const isPublic = publicRoutes.some((r) => pathname.startsWith(r));
 
   if (!accessToken) {
-
     if (refreshToken) {
       try {
         const res = await fetch(
@@ -32,19 +29,15 @@ export async function proxy(request: NextRequest) {
 
         if (setCookie) {
           const response = NextResponse.next();
+          const parsed = parse(setCookie);
 
-          const cookiesArr = setCookie.split(",");
+          if (parsed.accessToken) {
+            response.cookies.set("accessToken", parsed.accessToken);
+          }
 
-          cookiesArr.forEach((cookieStr) => {
-            const parsed = parse(cookieStr);
-
-            if (parsed.accessToken) {
-              response.cookies.set("accessToken", parsed.accessToken);
-            }
-            if (parsed.refreshToken) {
-              response.cookies.set("refreshToken", parsed.refreshToken);
-            }
-          });
+          if (parsed.refreshToken) {
+            response.cookies.set("refreshToken", parsed.refreshToken);
+          }
 
           if (isPublic) {
             return NextResponse.redirect(new URL("/", request.url));
@@ -53,7 +46,6 @@ export async function proxy(request: NextRequest) {
         }
 
       } catch (e) {
-
         if (isPrivate) {
           return NextResponse.redirect(new URL("/sign-in", request.url));
         }
@@ -63,19 +55,13 @@ export async function proxy(request: NextRequest) {
     if (isPrivate) {
       return NextResponse.redirect(new URL("/sign-in", request.url));
     }
-
     return NextResponse.next();
-
   }
-
-
 
   if (isPublic) {
     return NextResponse.redirect(new URL("/", request.url));
   }
-
   return NextResponse.next();
-
 }
 
 export const config = {

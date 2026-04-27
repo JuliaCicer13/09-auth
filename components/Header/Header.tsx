@@ -13,6 +13,7 @@ return (
           <li> 
            <Link className={css.linkNav} href='/notes/filter/all'>Notes</Link>
             </li>
+            
           <AuthNavigation /> 
         </ul>
     </nav>
