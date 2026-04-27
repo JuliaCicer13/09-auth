@@ -9,10 +9,10 @@ export const getServerMe = async () => {
   const cookieHeader = cookieStore
     .getAll()
     .map((c) => `${c.name}=${c.value}`)
-    .join('; ');
+    .join(';');
 
   const { data } = await api.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/auth/me`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/users/me`,
     {
       headers: {
         Cookie: cookieHeader,
