@@ -6,16 +6,18 @@ import { api } from '@/app/api/api';
 
 export const getServerMe = async () => {
   const cookieStore = await cookies();
-  const cookieHeader = cookieStore
+
+  const cookieString = cookieStore
     .getAll()
     .map((c) => `${c.name}=${c.value}`)
-    .join(';');
+    .join('; ');
 
-  const { data } = await api.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/users/me`,
+    console.log("COOKIES:", cookieString)
+
+  const { data } = await api.get('/users/me',
     {
       headers: {
-        Cookie: cookieHeader,
+        Cookie: cookieString,
       },
     }
   );
